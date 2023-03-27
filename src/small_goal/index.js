@@ -15,10 +15,28 @@ const SmallGoal = () => {
   const [Wage, setWage] = useState(0);
   const [Answer, setAnswer] = useState(0);
   const [ShowAnswer, setShowAnswer] = useState(false);
+  const [Name, setName] = useState(false);
+  const [ShowEnterName, setShowEnterName] = useState(true);
+  const [ShowName, setShowName] = useState(false);
+  const [ResetButton, setResetButton] = useState(false);
+  const [CalculateButton, setCalculateButton] = useState(true);
 
   const Calculate = () => {
     setAnswer(Price / Wage);
     setShowAnswer(true);
+    setShowEnterName(false);
+    setShowName(true);
+    setResetButton(true);
+    setCalculateButton(false);
+    console.log(Name);
+  };
+
+  const Reset = () => {
+    setShowAnswer(false);
+    setShowEnterName(true);
+    setShowName(false);
+    setResetButton(false);
+    setCalculateButton(true);
   };
 
   return (
@@ -27,7 +45,6 @@ const SmallGoal = () => {
         marginTop: "5%",
         flex: 1,
         width: "100%",
-        //backgroundColor: "#ccc",
         alignItems: "center",
         flexDirection: "column",
         position: "relative",
@@ -35,26 +52,38 @@ const SmallGoal = () => {
     >
       <View
         style={{
-          //flex: 0.05,
           flexDirection: "row",
           marginTop: "5%",
         }}
       >
-        <Text style={styles.text}>Input name: </Text>
-        <TextInput style={styles.input}>Name</TextInput>
+        {ShowEnterName && (
+          <View>
+            <Text style={styles.text}>Input name: </Text>
+
+            <TextInput
+              style={styles.input}
+              onChangeText={(value) => {
+                setName(value);
+              }}
+            >
+              Name
+            </TextInput>
+          </View>
+        )}
       </View>
-      <Image
-        style={{
-          marginTop: "10%",
-          width: "40%",
-          height: "20%",
-        }}
-        source={logo}
-      />
+      <View>
+        {ShowName && (
+          <View style={{ marginTop: "2%" }}>
+            <Text style={styles.name}>{Name}</Text>
+          </View>
+        )}
+      </View>
+
+      <Image style={styles.image} source={logo} />
 
       <View
         style={{
-          //flex: 0.05,
+          //flex: 1,
           flexDirection: "row",
         }}
       >
@@ -82,18 +111,30 @@ const SmallGoal = () => {
           }}
         ></TextInput>
       </View>
-      <View style={{ marginTop: "7%" }}>
-        <Pressable
-          style={styles.MyButton}
-          onPress={() => {
-            Calculate();
-          }}
-        >
-          <Text style={{ color: "white", fontWeight: "bold", fontSize: 20 }}>
-            Calculate
-          </Text>
-        </Pressable>
-      </View>
+      {CalculateButton && (
+        <View style={{ marginTop: "7%" }}>
+          <Pressable
+            style={styles.MyButton}
+            onPress={() => {
+              Calculate();
+            }}
+          >
+            <Text style={styles.ButtonText}>Calculate</Text>
+          </Pressable>
+        </View>
+      )}
+      {ResetButton && (
+        <View style={{ marginTop: "7%" }}>
+          <Pressable
+            style={styles.MyButton}
+            onPress={() => {
+              Reset();
+            }}
+          >
+            <Text style={styles.ButtonText}>Reset</Text>
+          </Pressable>
+        </View>
+      )}
       {ShowAnswer && (
         <View style={{ marginTop: "2%" }}>
           <Text>You will need to work {Answer} hours.</Text>
@@ -138,7 +179,7 @@ const styles = StyleSheet.create({
     marginTop: "5%",
   },
   ButtonText: {
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: "bold",
     color: "white",
   },
@@ -153,6 +194,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "black",
     //padding: "5 0 5 0",
+  },
+
+  name: {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "black",
+  },
+
+  image: {
+    marginTop: "10%",
+    width: "40%",
+    height: "20%",
   },
 });
 
