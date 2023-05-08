@@ -11,8 +11,9 @@ import {
 } from "react-native";
 import logo from "../../assets/SaveRight_Logo.png";
 import { useState } from "react";
+import { NavigationContainer } from "@react-navigation/native";
 
-const SmallGoal = () => {
+const SmallGoal = ({ navigation }) => {
   const [Price, setPrice] = useState(0);
   const [Wage, setWage] = useState(0);
   const [Answer, setAnswer] = useState(0);
