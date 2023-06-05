@@ -1,22 +1,37 @@
 import * as React from "react";
-import Home from "./home";
-import NewGoal from "./new_goal";
-import UpdateGoal from "./update_goal";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import { useState } from "react";
 //import DropdownMenu from "react-native-dropdown-menu";
 
-export default function BigGoal({ navigation }) {
-  const [pageView, setPageView] = useState("");
-
-  const page = () => {
-    if (pageView == "NewGoal") return <NewGoal setPageView={setPageView} />;
-    else if (pageView == "UpdateGoal")
-      return <UpdateGoal setPageView={setPageView} />;
-    else return <Home setPageView={setPageView} />;
-  };
-  return <View style={styles.centered}>{page()}</View>;
+export default function Home({ setPageView }) {
+  const [selected, setSelected] = React.useState("");
+  const data = [
+    { key: "1", value: "New Car" },
+    { key: "2", value: "Collage" },
+    { key: "3", value: "Puppy" },
+  ];
+  return (
+    <View style={styles.centered}>
+      <View>
+        <Text style={styles.Text}>
+          If you would like to create a new savings goal, click the button
+          below.
+        </Text>
+        <Pressable style={styles.Button} onPress={() => setPageView("NewGoal")}>
+          <Text style={styles.ButtonText}>New Goal</Text>
+        </Pressable>
+      </View>
+      <View>
+        <Text style={styles.Text}>
+          If you would like to view a savings goal, click the button below.
+        </Text>
+      </View>
+      <View style={{ paddingHorizontal: 20, paddingVerticle: 50, flex: 1 }}>
+        <SelectList data={data} setSelected={setSelected} />
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

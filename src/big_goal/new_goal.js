@@ -1,11 +1,14 @@
 //needs start point, end point and total time
 import * as React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 
-export default function Home({ navigation }) {
+export default function NewGoal({ setPageView }) {
   return (
     <View style={styles.centered}>
       <Text style={styles.Text}>Name of Goal:</Text>
+      <Pressable style={styles.Button} onPress={() => setPageView("")}>
+        <Text style={styles.ButtonText}>Cancel</Text>
+      </Pressable>
     </View>
   );
 }
