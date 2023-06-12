@@ -23,7 +23,7 @@ export default function NewGoal({ setPageView }) {
         returnKeyType="done"
         style={styles.input}
       ></TextInput>
-      <Pressable style={styles.Button}>
+      <Pressable style={styles.Button} onPress={() => setPageView("Graph")}>
         <Text style={styles.ButtonText}>Submit</Text>
       </Pressable>
       <Pressable style={styles.Button} onPress={() => setPageView("")}>
