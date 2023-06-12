@@ -1,11 +1,31 @@
 //needs start point, end point and total time
 import * as React from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, TextInput } from "react-native";
 
 export default function NewGoal({ setPageView }) {
   return (
     <View style={styles.centered}>
       <Text style={styles.Text}>Name of Goal:</Text>
+      <TextInput style={styles.input}></TextInput>
+      <Text style={styles.Text}>Purchase Date:</Text>
+      <TextInput style={styles.input}></TextInput>
+      <Text style={styles.Text}>Starting Amount:</Text>
+      <TextInput
+        keyboardType="number-pad"
+        returnKeyLabel="Done"
+        returnKeyType="done"
+        style={styles.input}
+      ></TextInput>
+      <Text style={styles.Text}>Total Cost:</Text>
+      <TextInput
+        keyboardType="number-pad"
+        returnKeyLabel="Done"
+        returnKeyType="done"
+        style={styles.input}
+      ></TextInput>
+      <Pressable style={styles.Button}>
+        <Text style={styles.ButtonText}>Submit</Text>
+      </Pressable>
       <Pressable style={styles.Button} onPress={() => setPageView("")}>
         <Text style={styles.ButtonText}>Cancel</Text>
       </Pressable>
@@ -18,7 +38,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#53914c",
     alignItems: "center",
     paddingVertical: "5%",
-    paddingHorizontal: 24,
+    padding: 10,
     borderRadius: 10,
     marginTop: "5%",
     marginBottom: "10%",
@@ -26,14 +46,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
     width: "40%",
-    marginLeft: "30%",
-    justifyContent: "center",
+    // marginLeft: "5%",
+    // justifyContent: "center",
   },
 
   Text: {
     alignItems: "center",
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 25,
     justifyContent: "center",
     marginLeft: "15%",
     marginRight: "15%",
@@ -54,7 +74,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   input: {
-    width: "40%",
+    width: "50%",
     margin: 12,
     borderWidth: 1,
     padding: 10,
