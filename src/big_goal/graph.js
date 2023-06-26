@@ -8,8 +8,10 @@ import {
   StackedBarChart,
 } from "react-native-chart-kit";
 import { View, Text, Dimensions } from "react-native";
+import getData from "../Utils/GetData";
 
 export default function Graph() {
+  const Data = getData("BigGoal");
   const StartDate = new Date();
   const MonthsUntilPurchase = 5;
   const StartingAmount = 100;
@@ -48,6 +50,7 @@ export default function Graph() {
   return (
     <View>
       <Text>{StartDate.toString()}</Text>
+      <Text>{Data}</Text>
       <LineChart
         data={{
           labels: LabelArray,
