@@ -1,5 +1,6 @@
 /*This is a test */
-
+import { addDoc } from "firebase/firestore";
+import { useFormik } from "formik";
 import { Wrap } from "react-native";
 import {
   StyleSheet,
@@ -12,6 +13,32 @@ import {
 import logo from "../../assets/SaveRight_Logo.png";
 import { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
+
+export const smallGoalValidation = object().shape({
+  priceField: string().required("Price is Required"),
+  wageField: string().required("Wage is Required"),
+  nameField: string().required("Name is Required"),
+});
+const { handleChange, handleBlur, handleSubmit, values, errors, touched } =
+  useFormik({
+    initialValues: {
+      priceField: "",
+      wageField: "",
+      nameField: "",
+    },
+    validationSchema: formNameValidation,
+    onSubmit: (values) => {
+      addDoc(firebaseReference, {
+        firebaseFieldName: values.priceField,
+        firebaseFieldName: values.wageField,
+        firebaseFieldName: values.nameField,
+      })
+        .then(() => {
+          //success, do something?
+        })
+        .catch((err) => console.log(err));
+    },
+  });
 
 const SmallGoal = ({ navigation }) => {
   const [Price, setPrice] = useState(0);
@@ -65,10 +92,17 @@ const SmallGoal = ({ navigation }) => {
 
             <TextInput
               style={styles.input}
+              onChangeText={handleChange("nameField")}
+              onBlur={handleBlur("nameField")}
               onChangeText={(value) => {
                 setName(value);
               }}
             >
+              {errors.state && (
+                <Text style={formStyles.errorMessage}>
+                  {errors.vehicleName}
+                </Text>
+              )}
               Name
             </TextInput>
           </View>
