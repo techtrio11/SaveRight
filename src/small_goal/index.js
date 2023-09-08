@@ -14,45 +14,15 @@ import logo from "../../assets/SaveRight_Logo.png";
 import { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 
-export const smallGoalValidation = object().shape({
-  priceField: string().required("Price is Required"),
-  wageField: string().required("Wage is Required"),
-  nameField: string().required("Name is Required"),
-});
-const { handleChange, handleBlur, handleSubmit, values, errors, touched } =
-  useFormik({
-    initialValues: {
-      priceField: "",
-      wageField: "",
-      nameField: "",
-    },
-    validationSchema: formNameValidation,
-    onSubmit: (values) => {
-      addDoc(firebaseReference, {
-        firebaseFieldName: values.priceField,
-        firebaseFieldName: values.wageField,
-        firebaseFieldName: values.nameField,
-      })
-        .then(() => {
-          //success, do something?
-        })
-        .catch((err) => console.log(err));
-    },
-  });
-
 const SmallGoal = ({ navigation }) => {
-  const [Price, setPrice] = useState(0);
-  const [Wage, setWage] = useState(0);
-  const [Answer, setAnswer] = useState(0);
   const [ShowAnswer, setShowAnswer] = useState(false);
-  const [Name, setName] = useState(false);
   const [ShowEnterName, setShowEnterName] = useState(true);
   const [ShowName, setShowName] = useState(false);
   const [ResetButton, setResetButton] = useState(false);
   const [CalculateButton, setCalculateButton] = useState(true);
 
   const Calculate = () => {
-    setAnswer(Price / Wage);
+    setAnswer(values.priceField / values.wageField);
     setShowAnswer(true);
     setShowEnterName(false);
     setShowName(true);
@@ -94,9 +64,6 @@ const SmallGoal = ({ navigation }) => {
               style={styles.input}
               onChangeText={handleChange("nameField")}
               onBlur={handleBlur("nameField")}
-              onChangeText={(value) => {
-                setName(value);
-              }}
             >
               {errors.state && (
                 <Text style={formStyles.errorMessage}>
@@ -127,9 +94,8 @@ const SmallGoal = ({ navigation }) => {
         <Text style={styles.text}>Cost of Item: </Text>
         <TextInput
           style={styles.input}
-          onChangeText={(value) => {
-            setPrice(value);
-          }}
+          onChangeText={handleChange("priceField")}
+          onBlur={handleBlur("priceField")}
         ></TextInput>
       </View>
       <View
@@ -143,9 +109,8 @@ const SmallGoal = ({ navigation }) => {
         <Text style={styles.text}>Hourly Wage: </Text>
         <TextInput
           style={styles.input}
-          onChangeText={(value) => {
-            setWage(value);
-          }}
+          onChangeText={handleChange("WageField")}
+          onBlur={handleBlur("WageField")}
         ></TextInput>
       </View>
       {CalculateButton && (
@@ -198,6 +163,35 @@ const SmallGoal = ({ navigation }) => {
         </View> */
   );
 };
+
+export const smallGoalValidation = object().shape({
+  priceField: string().required("Price is Required"),
+  wageField: string().required("Wage is Required"),
+  nameField: string().required("Name is Required"),
+});
+const { handleChange, handleBlur, handleSubmit, values, errors, touched } =
+  useFormik({
+    initialValues: {
+      priceField: "",
+      wageField: "",
+      nameField: "",
+      answerField: "",
+    },
+    validationSchema: formNameValidation,
+    onSubmit: (values) => {
+      addDoc(firebaseReference, {
+        firebaseFieldName: values.priceField,
+        firebaseFieldName: values.wageField,
+        firebaseFieldName: values.nameField,
+        firebaseFieldName: values.answerField,
+      })
+        .then(() => {
+          //success, do something?
+        })
+        .catch((err) => console.log(err));
+    },
+  });
+
 const styles = StyleSheet.create({
   input: {
     //height: "200%",
