@@ -13,8 +13,11 @@ import {
 import logo from "../../assets/SaveRight_Logo.png";
 import { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
+import { object, string } from "yup";
+import { smallGoalReference } from "../../FirebaseConfig";
 
 const SmallGoal = ({ navigation }) => {
+  const [Answer, setAnswer] = useState(0);
   const [ShowAnswer, setShowAnswer] = useState(false);
   const [ShowEnterName, setShowEnterName] = useState(true);
   const [ShowName, setShowName] = useState(false);
@@ -22,13 +25,12 @@ const SmallGoal = ({ navigation }) => {
   const [CalculateButton, setCalculateButton] = useState(true);
 
   const Calculate = () => {
-    setAnswer(values.priceField / values.wageField);
+    setAnswer(values.price / values.wage);
     setShowAnswer(true);
     setShowEnterName(false);
     setShowName(true);
     setResetButton(true);
     setCalculateButton(false);
-    console.log(Name);
   };
 
   const Reset = () => {
@@ -37,171 +39,149 @@ const SmallGoal = ({ navigation }) => {
     setShowName(false);
     setResetButton(false);
     setCalculateButton(true);
+    resetForm();
   };
 
-  return (
-    <View
-      style={{
-        marginTop: "5%",
-        flex: 1,
-        width: "100%",
-        alignItems: "center",
-        flexDirection: "column",
-        position: "relative",
-      }}
-    >
-      <View
-        style={{
-          flexDirection: "row",
-          marginTop: "5%",
-        }}
-      >
-        {ShowEnterName && (
-          <View>
-            <Text style={styles.text}>Input name: </Text>
-
-            <TextInput
-              style={styles.input}
-              onChangeText={handleChange("nameField")}
-              onBlur={handleBlur("nameField")}
-            >
-              {errors.state && (
-                <Text style={formStyles.errorMessage}>
-                  {errors.vehicleName}
-                </Text>
-              )}
-              Name
-            </TextInput>
-          </View>
-        )}
-      </View>
-      <View>
-        {ShowName && (
-          <View style={{ marginTop: "2%" }}>
-            <Text style={styles.name}>{Name}</Text>
-          </View>
-        )}
-      </View>
-
-      <Image style={styles.image} source={logo} />
-
-      <View
-        style={{
-          //flex: 1,
-          flexDirection: "row",
-        }}
-      >
-        <Text style={styles.text}>Cost of Item: </Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={handleChange("priceField")}
-          onBlur={handleBlur("priceField")}
-        ></TextInput>
-      </View>
-      <View
-        style={{
-          //flex: 0.05,
-          flexDirection: "row",
-          marginTop: "9%",
-          justifyContent: "center",
-        }}
-      >
-        <Text style={styles.text}>Hourly Wage: </Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={handleChange("WageField")}
-          onBlur={handleBlur("WageField")}
-        ></TextInput>
-      </View>
-      {CalculateButton && (
-        <View style={{ marginTop: "7%" }}>
-          <Pressable
-            style={styles.MyButton}
-            onPress={() => {
-              Calculate();
-            }}
-          >
-            <Text style={styles.ButtonText}>Calculate</Text>
-          </Pressable>
-        </View>
-      )}
-      {ResetButton && (
-        <View style={{ marginTop: "7%" }}>
-          <Pressable
-            style={styles.MyButton}
-            onPress={() => {
-              Reset();
-            }}
-          >
-            <Text style={styles.ButtonText}>Reset</Text>
-          </Pressable>
-        </View>
-      )}
-      {ShowAnswer && (
-        <View style={{ marginTop: "2%" }}>
-          <Text>You will need to work {Answer} hours.</Text>
-        </View>
-      )}
-    </View>
-
-    /*<View>
-        <Image
-          style={{
-            position: "relative",
-            width: 100,
-          }}
-          source={logo}
-          resizeMode={"cover"}
-        />
-      </View>
-      <View>
-        <Text>Hello small goal</Text>
-        <TextInput style={styles.input} placeholder="enter name" />
-        <Pressable style={styles.MyButton}>
-          <Text style={styles.ButtonText}>Enter</Text>
-        </Pressable>
-        </View> */
-  );
-};
-
-export const smallGoalValidation = object().shape({
-  priceField: string().required("Price is Required"),
-  wageField: string().required("Wage is Required"),
-  nameField: string().required("Name is Required"),
-});
-const { handleChange, handleBlur, handleSubmit, values, errors, touched } =
-  useFormik({
+  const smallGoalValidation = object().shape({
+    price: string().required("Price is Required"),
+    wage: string().required("Wage is Required"),
+    name: string().required("Name is Required"),
+  });
+  const {
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    values,
+    errors,
+    touched,
+    resetForm,
+  } = useFormik({
     initialValues: {
-      priceField: "",
-      wageField: "",
-      nameField: "",
-      answerField: "",
+      price: "",
+      wage: "",
+      name: "",
+      answer: "",
     },
-    validationSchema: formNameValidation,
+    validationSchema: smallGoalValidation,
     onSubmit: (values) => {
-      addDoc(firebaseReference, {
-        firebaseFieldName: values.priceField,
-        firebaseFieldName: values.wageField,
-        firebaseFieldName: values.nameField,
-        firebaseFieldName: values.answerField,
+      addDoc(smallGoalReference, {
+        price: values.price,
+        wage: values.wage,
+        name: values.name,
+        answer: Answer.toString(),
       })
         .then(() => {
-          //success, do something?
+          Reset();
         })
         .catch((err) => console.log(err));
     },
   });
 
+  return (
+    <View style={styles.container}>
+      <Image style={styles.image} source={logo} />
+      {ShowEnterName && (
+        <View style={styles.formContainer}>
+          <Text style={styles.label}>Input name: </Text>
+          <TextInput
+            value={values.name}
+            style={styles.input}
+            onChangeText={handleChange("name")}
+            onBlur={handleBlur("name")}
+          />
+          {errors.name && (
+            <Text style={formStyles.errorMessage}>{errors.name}</Text>
+          )}
+        </View>
+      )}
+      {ShowName && (
+        <View>
+          <Text style={styles.name}>{values.name}</Text>
+        </View>
+      )}
+      <View style={styles.formContainer}>
+        <Text style={styles.label}>Cost of Item: </Text>
+        <TextInput
+          value={values.price}
+          style={styles.input}
+          onChangeText={handleChange("price")}
+          onBlur={handleBlur("price")}
+        />
+      </View>
+      <View style={styles.formContainer}>
+        <Text style={styles.label}>Hourly Wage: </Text>
+        <TextInput
+          value={values.wage}
+          style={styles.input}
+          onChangeText={handleChange("wage")}
+          onBlur={handleBlur("wage")}
+        />
+      </View>
+      {CalculateButton && (
+        <View>
+          <Pressable
+            style={styles.button}
+            onPress={() => {
+              Calculate();
+            }}
+          >
+            <Text style={styles.buttonText}>Calculate</Text>
+          </Pressable>
+        </View>
+      )}
+      {ResetButton && (
+        <>
+          <View>
+            <Pressable
+              style={styles.button}
+              onPress={() => {
+                Reset();
+              }}
+            >
+              <Text style={styles.buttonText}>Reset</Text>
+            </Pressable>
+          </View>
+          <View>
+            <Pressable
+              style={styles.button}
+              onPress={() => {
+                handleSubmit();
+              }}
+            >
+              <Text style={styles.buttonText}>Save</Text>
+            </Pressable>
+          </View>
+        </>
+      )}
+      {ShowAnswer && (
+        <View>
+          <Text>You will need to work {Answer} hours.</Text>
+        </View>
+      )}
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+    flexDirection: "column",
+    position: "relative",
+    backgroundColor: "#ffffff",
+  },
+  formContainer: {
+    display: "flex",
+    flexDirection: "row",
+  },
   input: {
-    //height: "200%",
-    width: "40%",
+    width: "50%",
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    color: "#ccc",
   },
-  MyButton: {
+  button: {
     backgroundColor: "#53914c",
     alignItems: "center",
     paddingVertical: "5%",
@@ -209,34 +189,25 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: "5%",
   },
-  ButtonText: {
+  buttonText: {
     fontSize: 20,
     fontWeight: "bold",
     color: "white",
   },
-  logo: {
-    position: "static",
-    width: "25%",
-    height: "25%",
-  },
-
-  text: {
+  label: {
     fontSize: 15,
     fontWeight: "bold",
     color: "black",
-    //padding: "5 0 5 0",
+    paddingTop: 20,
   },
-
   name: {
     fontSize: 30,
     fontWeight: "bold",
     color: "black",
   },
-
   image: {
-    marginTop: "10%",
-    width: "40%",
-    height: "20%",
+    width: "68%",
+    height: "40%",
   },
 });
 
