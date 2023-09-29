@@ -8,11 +8,7 @@ import {
 } from "firebase/firestore";
 import firebaseConfig from "../../FirebaseConfig";
 
-const getData = (collectionDB) => {
-  initializeApp(firebaseConfig);
-  const db = getFirestore();
-  const colRef = collection(db, collectionDB);
-
+const getData = (colRef) => {
   let dataCollection = [];
 
   getDocs(colRef)

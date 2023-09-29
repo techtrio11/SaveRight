@@ -11,7 +11,7 @@ export default function NewGoal({ setPageView }) {
     Name: string().required("Name is Required"),
     StartingAmount: string().required("Starting Amount is Required"),
     TotalCost: string().required("Total Cost is Required"),
-    PurchaseDate: string().required("Purchase Date is Required"),
+    MonthsUntilPurchase: string().required("Months Until Purchase is Required"),
   });
 
   const {
@@ -27,7 +27,7 @@ export default function NewGoal({ setPageView }) {
       Name: "",
       StartingAmount: "",
       TotalCost: "",
-      PurchaseDate: "",
+      MonthsUntilPurchase: "",
     },
     validationSchema: bigGoalValidation,
     onSubmit: (values) => {
@@ -36,10 +36,10 @@ export default function NewGoal({ setPageView }) {
         StartingAmount: values.StartingAmount,
         TotalCost: values.TotalCost,
         StartDate: new Date(),
-        MonthsUntilPurchase: 0,
+        MonthsUntilPurchase: values.MonthsUntilPurchase,
       })
         .then(() => {
-          //setPageView("Graph");
+          setPageView("Graph");
         })
         .catch((err) => console.log(err));
     },
@@ -53,18 +53,18 @@ export default function NewGoal({ setPageView }) {
         onChangeText={handleChange("Name")}
         onBlur={handleBlur("Name")}
       ></TextInput>
-      {errors.name && (
-        <Text style={formStyles.errorMessage}>{errors.name}</Text>
-      )}
-      <Text style={styles.Text}>Purchase Date:</Text>
+      {errors.name && <Text style={styles.errorMessage}>{errors.name}</Text>}
+      <Text style={styles.Text}>Months Until Purchase:</Text>
       <TextInput
-        value={values.PurchaseDate}
+        keyboardType="number-pad"
+        returnKeyLabel="Done"
+        value={values.MonthsUntilPurchase}
         style={styles.input}
-        onChangeText={handleChange("PurchaseDate")}
-        onBlur={handleBlur("PurchaseDate")}
+        onChangeText={handleChange("MonthsUntilPurchase")}
+        onBlur={handleBlur("MonthsUntilPurchase")}
       ></TextInput>
-      {errors.PurchaseDate && (
-        <Text style={formStyles.errorMessage}>{errors.PurchaseDate}</Text>
+      {errors.MonthsUntilPurchase && (
+        <Text style={styles.errorMessage}>{errors.MonthsUntilPurchase}</Text>
       )}
       <Text style={styles.Text}>Starting Amount:</Text>
       <TextInput
@@ -76,7 +76,7 @@ export default function NewGoal({ setPageView }) {
         onBlur={handleBlur("StartingAmount")}
       ></TextInput>
       {errors.StartingAmount && (
-        <Text style={formStyles.errorMessage}>{errors.StartingAmount}</Text>
+        <Text style={styles.errorMessage}>{errors.StartingAmount}</Text>
       )}
       <Text style={styles.Text}>Total Cost:</Text>
       <TextInput
@@ -88,7 +88,7 @@ export default function NewGoal({ setPageView }) {
         onBlur={handleBlur("TotalCost")}
       ></TextInput>
       {errors.TotalCost && (
-        <Text style={formStyles.errorMessage}>{errors.TotalCost}</Text>
+        <Text style={styles.errorMessage}>{errors.TotalCost}</Text>
       )}
       <Pressable style={styles.Button} onPress={() => handleSubmit()}>
         <Text style={styles.ButtonText}>Submit</Text>
@@ -146,5 +146,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     color: "#ccc",
+  },
+  errorMessage: {
+    color: "red",
   },
 });

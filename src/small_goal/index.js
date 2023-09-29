@@ -90,7 +90,7 @@ const SmallGoal = ({ navigation }) => {
             onBlur={handleBlur("name")}
           />
           {errors.name && (
-            <Text style={formStyles.errorMessage}>{errors.name}</Text>
+            <Text style={styles.errorMessage}>{errors.name}</Text>
           )}
         </View>
       )}
@@ -106,7 +106,10 @@ const SmallGoal = ({ navigation }) => {
           style={styles.input}
           onChangeText={handleChange("price")}
           onBlur={handleBlur("price")}
-        />
+        />{" "}
+        {errors.price && (
+          <Text style={styles.errorMessage}>{errors.price}</Text>
+        )}
       </View>
       <View style={styles.formContainer}>
         <Text style={styles.label}>Hourly Wage: </Text>
@@ -115,7 +118,8 @@ const SmallGoal = ({ navigation }) => {
           style={styles.input}
           onChangeText={handleChange("wage")}
           onBlur={handleBlur("wage")}
-        />
+        />{" "}
+        {errors.wage && <Text style={styles.errorMessage}>{errors.wage}</Text>}
       </View>
       {CalculateButton && (
         <View>
@@ -208,6 +212,9 @@ const styles = StyleSheet.create({
   image: {
     width: "68%",
     height: "40%",
+  },
+  errorMessage: {
+    color: "red",
   },
 });
 

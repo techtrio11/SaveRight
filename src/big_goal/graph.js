@@ -9,9 +9,10 @@ import {
 } from "react-native-chart-kit";
 import { View, Text, Dimensions } from "react-native";
 import getData from "../Utils/GetData";
+import { bigGoalReference } from "../../FirebaseConfig";
 
 export default function Graph() {
-  const Data = getData("BigGoal");
+  const Data = getData(bigGoalReference);
   const StartDate = new Date();
   const MonthsUntilPurchase = 5;
   const StartingAmount = 100;
