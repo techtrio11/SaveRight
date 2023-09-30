@@ -1,7 +1,7 @@
 //needs start point, end point and total time
 import * as React from "react";
 import { View, Text, StyleSheet, Pressable, TextInput } from "react-native";
-import { object, string } from "yup";
+import { object, string, number } from "yup";
 import { bigGoalReference } from "../../FirebaseConfig";
 import { addDoc } from "firebase/firestore";
 import { useFormik } from "formik";
@@ -11,7 +11,10 @@ export default function NewGoal({ setPageView }) {
     Name: string().required("Name is Required"),
     StartingAmount: string().required("Starting Amount is Required"),
     TotalCost: string().required("Total Cost is Required"),
-    MonthsUntilPurchase: string().required("Months Until Purchase is Required"),
+    MonthsUntilPurchase: number()
+      .min(1, "Must be between 1 and 12")
+      .max(12, "Must be between 1 and 12")
+      .required("Months Until Purchase is Required"),
   });
 
   const {
@@ -53,7 +56,9 @@ export default function NewGoal({ setPageView }) {
         onChangeText={handleChange("Name")}
         onBlur={handleBlur("Name")}
       ></TextInput>
-      {errors.name && <Text style={styles.errorMessage}>{errors.name}</Text>}
+      {errors.Name && touched.Name && (
+        <Text style={styles.errorMessage}>{errors.Name}</Text>
+      )}
       <Text style={styles.Text}>Months Until Purchase:</Text>
       <TextInput
         keyboardType="number-pad"
@@ -63,7 +68,7 @@ export default function NewGoal({ setPageView }) {
         onChangeText={handleChange("MonthsUntilPurchase")}
         onBlur={handleBlur("MonthsUntilPurchase")}
       ></TextInput>
-      {errors.MonthsUntilPurchase && (
+      {errors.MonthsUntilPurchase && touched.MonthsUntilPurchase && (
         <Text style={styles.errorMessage}>{errors.MonthsUntilPurchase}</Text>
       )}
       <Text style={styles.Text}>Starting Amount:</Text>
@@ -75,7 +80,7 @@ export default function NewGoal({ setPageView }) {
         onChangeText={handleChange("StartingAmount")}
         onBlur={handleBlur("StartingAmount")}
       ></TextInput>
-      {errors.StartingAmount && (
+      {errors.StartingAmount && touched.StartingAmount && (
         <Text style={styles.errorMessage}>{errors.StartingAmount}</Text>
       )}
       <Text style={styles.Text}>Total Cost:</Text>
@@ -87,7 +92,7 @@ export default function NewGoal({ setPageView }) {
         onChangeText={handleChange("TotalCost")}
         onBlur={handleBlur("TotalCost")}
       ></TextInput>
-      {errors.TotalCost && (
+      {errors.TotalCost && touched.TotalCost && (
         <Text style={styles.errorMessage}>{errors.TotalCost}</Text>
       )}
       <Pressable style={styles.Button} onPress={() => handleSubmit()}>
