@@ -9,44 +9,41 @@ import { useFormik } from "formik";
 export default function NewGoal({ setPageView }) {
   const bigGoalValidation = object().shape({
     Name: string().required("Name is Required"),
-    StartingAmount: string().required("Starting Amount is Required"),
-    TotalCost: string().required("Total Cost is Required"),
+    StartingAmount: number()
+      .min(1, "Must be more then 1")
+      .required("Starting Amount is Required"),
+    TotalCost: number()
+      .min(1, "Must be more then 1")
+      .required("Total Cost is Required"),
     MonthsUntilPurchase: number()
       .min(1, "Must be between 1 and 12")
       .max(12, "Must be between 1 and 12")
       .required("Months Until Purchase is Required"),
   });
 
-  const {
-    handleChange,
-    handleBlur,
-    handleSubmit,
-    values,
-    errors,
-    touched,
-    resetForm,
-  } = useFormik({
-    initialValues: {
-      Name: "",
-      StartingAmount: "",
-      TotalCost: "",
-      MonthsUntilPurchase: "",
-    },
-    validationSchema: bigGoalValidation,
-    onSubmit: (values) => {
-      addDoc(bigGoalReference, {
-        Name: values.Name,
-        StartingAmount: values.StartingAmount,
-        TotalCost: values.TotalCost,
-        StartDate: new Date(),
-        MonthsUntilPurchase: values.MonthsUntilPurchase,
-      })
-        .then(() => {
-          setPageView("Graph");
+  const { handleChange, handleBlur, handleSubmit, values, errors, touched } =
+    useFormik({
+      initialValues: {
+        Name: "",
+        StartingAmount: "",
+        TotalCost: "",
+        MonthsUntilPurchase: "",
+      },
+      validationSchema: bigGoalValidation,
+      onSubmit: (values) => {
+        addDoc(bigGoalReference, {
+          Name: values.Name,
+          StartingAmount: values.StartingAmount,
+          TotalCost: values.TotalCost,
+          StartDate: new Date(),
+          MonthsUntilPurchase: values.MonthsUntilPurchase,
         })
-        .catch((err) => console.log(err));
-    },
-  });
+          .then(() => {
+            setPageView("");
+          })
+          .catch((err) => console.log(err));
+      },
+    });
   return (
     <View style={styles.centered}>
       <Text style={styles.Text}>Name of Goal:</Text>
