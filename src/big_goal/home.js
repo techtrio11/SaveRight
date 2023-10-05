@@ -1,16 +1,9 @@
 import * as React from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
-import { SelectList } from "react-native-dropdown-select-list";
-import { useState } from "react";
+
 //import DropdownMenu from "react-native-dropdown-menu";
 
 export default function Home({ setPageView }) {
-  const [selected, setSelected] = React.useState("");
-  const data = [
-    { key: "1", value: "New Car" },
-    { key: "2", value: "Collage" },
-    { key: "3", value: "Puppy" },
-  ];
   return (
     <View style={styles.centered}>
       <View>
@@ -26,9 +19,9 @@ export default function Home({ setPageView }) {
         <Text style={styles.Text}>
           If you would like to view a savings goal, click the button below.
         </Text>
-      </View>
-      <View style={{ paddingHorizontal: 20, paddingVerticle: 50, flex: 1 }}>
-        <SelectList data={data} setSelected={setSelected} />
+        <Pressable style={styles.Button} onPress={() => setPageView("Graph")}>
+          <Text style={styles.ButtonText}>View Goal</Text>
+        </Pressable>
       </View>
     </View>
   );
