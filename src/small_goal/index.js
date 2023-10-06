@@ -89,7 +89,7 @@ const SmallGoal = ({ navigation }) => {
             onChangeText={handleChange("name")}
             onBlur={handleBlur("name")}
           />
-          {errors.name && touched.Name && (
+          {errors.Name && touched.Name && (
             <Text style={styles.errorMessage}>{errors.name}</Text>
           )}
         </View>

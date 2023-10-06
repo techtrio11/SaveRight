@@ -1,5 +1,12 @@
-import { LineChart } from "react-native-chart-kit";
-import { View, Text, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  Dimensions,
+  StyleSheet,
+  Pressable,
+  navigation,
+} from "react-native";
+//import { navigation } from "@react-navigation/native";
 import { bigGoalReference, db } from "../../FirebaseConfig";
 import { onSnapshot, query, doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -147,6 +154,64 @@ export default function Graph(bigGoalId) {
           />
         </>
       )}
+      <Pressable
+        style={styles.button}
+        onPress={() => navigation.navigate("home.js")}
+      >
+        <Text style={styles.buttonText}>Back</Text>
+      </Pressable>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+    flexDirection: "column",
+    position: "relative",
+    backgroundColor: "#ffffff",
+  },
+  formContainer: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  input: {
+    width: "50%",
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
+  button: {
+    backgroundColor: "#53914c",
+    alignItems: "center",
+    paddingVertical: "5%",
+    paddingHorizontal: 24,
+    borderRadius: 10,
+    marginTop: "5%",
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "white",
+  },
+  label: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "black",
+    paddingTop: 20,
+  },
+  name: {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "black",
+  },
+  image: {
+    width: "68%",
+    height: "40%",
+  },
+  errorMessage: {
+    color: "red",
+  },
+});
