@@ -9,6 +9,7 @@ import Education from "./src/education";
 import Home from "./src/Home";
 import SmallGoal from "./src/small_goal";
 import BigGoal from "./src/big_goal";
+
 //import NewGoalScreen from "./src/new_goal";
 
 // Screen Names
