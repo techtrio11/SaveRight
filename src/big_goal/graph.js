@@ -4,16 +4,17 @@ import {
   Dimensions,
   StyleSheet,
   Pressable,
-  navigation,
+  ScrollView,
 } from "react-native";
-//import { navigation } from "@react-navigation/native";
+// import { navigation } from "@react-navigation/native";
 import { bigGoalReference, db } from "../../FirebaseConfig";
 import { onSnapshot, query, doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { SelectList } from "react-native-dropdown-select-list";
 import { formatFirebaseDate } from "../Utils/formatDate";
+import { LineChart } from "react-native-chart-kit";
 
-export default function Graph(bigGoalId) {
+export default function Graph({ setPageView }) {
   const [StartDate, setStartDate] = useState(new Date());
   const [MonthsUntilPurchase, setMonthsUntilPurchase] = useState(0);
   const [StartingAmount, setStartingAmount] = useState(0);
@@ -86,81 +87,80 @@ export default function Graph(bigGoalId) {
   }
 
   return (
-    <View>
-      <View style={{ paddingHorizontal: 20, paddingVerticle: 50, flex: 1 }}>
-        <SelectList data={data} setSelected={setSelected} />
-      </View>
-      {selected && (
-        <>
-          <View
-            style={{
-              alignItems: "center",
-              padding: 10,
-            }}
-          >
-            <Text>
-              You will need to save ${SavingsPerMonth.toFixed(2)} for{" "}
-              {MonthsUntilPurchase} months.
-            </Text>
-          </View>
-          <View
-            style={{
-              alignItems: "center",
-              padding: 10,
-            }}
-          >
-            <Text>
-              Start Date: {StartDate.getMonth()}/{StartDate.getDay()}/
-              {StartDate.getFullYear()}
-            </Text>
-            <Text>Starting Amount: ${StartingAmount}</Text>
-            <Text>Total Cost: ${TotalCost}</Text>
-          </View>
-          <LineChart
-            data={{
-              labels: LabelArray,
-              datasets: [
-                {
-                  data: dataArray,
+    <ScrollView>
+      <View>
+        <View style={{ paddingHorizontal: 20, paddingVertical: 50, flex: 1 }}>
+          <SelectList data={data} setSelected={setSelected} />
+        </View>
+        {selected && (
+          <>
+            <View
+              style={{
+                alignItems: "center",
+                padding: 10,
+              }}
+            >
+              <Text>
+                You will need to save ${SavingsPerMonth.toFixed(2)} for{" "}
+                {MonthsUntilPurchase} months.
+              </Text>
+            </View>
+            <View
+              style={{
+                alignItems: "center",
+                padding: 10,
+              }}
+            >
+              <Text>
+                Start Date: {StartDate.getMonth()}/{StartDate.getDay()}/
+                {StartDate.getFullYear()}
+              </Text>
+              <Text>Starting Amount: ${StartingAmount}</Text>
+              <Text>Total Cost: ${TotalCost}</Text>
+            </View>
+            <LineChart
+              data={{
+                labels: LabelArray,
+                datasets: [
+                  {
+                    data: dataArray,
+                  },
+                ],
+              }}
+              width={Dimensions.get("window").width} // from react-native
+              height={220}
+              yAxisLabel="$"
+              yAxisSuffix=""
+              yAxisInterval={1} // optional, defaults to 1
+              chartConfig={{
+                backgroundColor: "#32a850",
+                backgroundGradientFrom: "#32a850",
+                backgroundGradientTo: "#3bdb64",
+                decimalPlaces: 2, // optional, defaults to 2dp
+                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                style: {
+                  borderRadius: 16,
                 },
-              ],
-            }}
-            width={Dimensions.get("window").width} // from react-native
-            height={220}
-            yAxisLabel="$"
-            yAxisSuffix=""
-            yAxisInterval={1} // optional, defaults to 1
-            chartConfig={{
-              backgroundColor: "#32a850",
-              backgroundGradientFrom: "#32a850",
-              backgroundGradientTo: "#3bdb64",
-              decimalPlaces: 2, // optional, defaults to 2dp
-              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-              labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-              style: {
+                propsForDots: {
+                  r: "6",
+                  strokeWidth: "2",
+                  stroke: "#0b6e24",
+                },
+              }}
+              bezier
+              style={{
+                marginVertical: 8,
                 borderRadius: 16,
-              },
-              propsForDots: {
-                r: "6",
-                strokeWidth: "2",
-                stroke: "#0b6e24",
-              },
-            }}
-            bezier
-            style={{
-              marginVertical: 8,
-              borderRadius: 16,
-            }}
-          />
-        </>
-      )}
-      <Pressable
-        style={styles.button}
-        onPress={() => navigation.navigate("home.js")}
-      >
-        <Text style={styles.buttonText}>Back</Text>
-      </Pressable>
-    </View>
+              }}
+            />
+          </>
+        )}
+        <Pressable style={styles.button} onPress={() => setPageView("Home")}>
+          <Text style={styles.buttonText}>Back</Text>
+        </Pressable>
+      </View>
+    </ScrollView>
   );
 }
 
