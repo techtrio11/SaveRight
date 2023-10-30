@@ -1,6 +1,13 @@
 //needs start point, end point and total time
 import * as React from "react";
-import { View, Text, StyleSheet, Pressable, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  TextInput,
+  ScrollView,
+} from "react-native";
 import { object, string, number } from "yup";
 import { bigGoalReference } from "../../FirebaseConfig";
 import { addDoc } from "firebase/firestore";
@@ -45,60 +52,62 @@ export default function NewGoal({ setPageView }) {
       },
     });
   return (
-    <View style={styles.centered}>
-      <Text style={styles.Text}>Name of Goal:</Text>
-      <TextInput
-        value={values.Name}
-        style={styles.input}
-        onChangeText={handleChange("Name")}
-        onBlur={handleBlur("Name")}
-      ></TextInput>
-      {errors.Name && touched.Name && (
-        <Text style={styles.errorMessage}>{errors.Name}</Text>
-      )}
-      <Text style={styles.Text}>Months Until Purchase:</Text>
-      <TextInput
-        keyboardType="number-pad"
-        returnKeyLabel="Done"
-        value={values.MonthsUntilPurchase}
-        style={styles.input}
-        onChangeText={handleChange("MonthsUntilPurchase")}
-        onBlur={handleBlur("MonthsUntilPurchase")}
-      ></TextInput>
-      {errors.MonthsUntilPurchase && touched.MonthsUntilPurchase && (
-        <Text style={styles.errorMessage}>{errors.MonthsUntilPurchase}</Text>
-      )}
-      <Text style={styles.Text}>Starting Amount:</Text>
-      <TextInput
-        keyboardType="number-pad"
-        returnKeyLabel="Done"
-        value={values.StartingAmount}
-        style={styles.input}
-        onChangeText={handleChange("StartingAmount")}
-        onBlur={handleBlur("StartingAmount")}
-      ></TextInput>
-      {errors.StartingAmount && touched.StartingAmount && (
-        <Text style={styles.errorMessage}>{errors.StartingAmount}</Text>
-      )}
-      <Text style={styles.Text}>Total Cost:</Text>
-      <TextInput
-        keyboardType="number-pad"
-        returnKeyLabel="Done"
-        value={values.TotalCost}
-        style={styles.input}
-        onChangeText={handleChange("TotalCost")}
-        onBlur={handleBlur("TotalCost")}
-      ></TextInput>
-      {errors.TotalCost && touched.TotalCost && (
-        <Text style={styles.errorMessage}>{errors.TotalCost}</Text>
-      )}
-      <Pressable style={styles.Button} onPress={() => handleSubmit()}>
-        <Text style={styles.ButtonText}>Submit</Text>
-      </Pressable>
-      <Pressable style={styles.Button} onPress={() => setPageView("")}>
-        <Text style={styles.ButtonText}>Cancel</Text>
-      </Pressable>
-    </View>
+    <ScrollView>
+      <View style={styles.centered}>
+        <Text style={styles.Text}>Name of Goal:</Text>
+        <TextInput
+          value={values.Name}
+          style={styles.input}
+          onChangeText={handleChange("Name")}
+          onBlur={handleBlur("Name")}
+        ></TextInput>
+        {errors.Name && touched.Name && (
+          <Text style={styles.errorMessage}>{errors.Name}</Text>
+        )}
+        <Text style={styles.Text}>Months Until Purchase:</Text>
+        <TextInput
+          keyboardType="number-pad"
+          returnKeyLabel="Done"
+          value={values.MonthsUntilPurchase}
+          style={styles.input}
+          onChangeText={handleChange("MonthsUntilPurchase")}
+          onBlur={handleBlur("MonthsUntilPurchase")}
+        ></TextInput>
+        {errors.MonthsUntilPurchase && touched.MonthsUntilPurchase && (
+          <Text style={styles.errorMessage}>{errors.MonthsUntilPurchase}</Text>
+        )}
+        <Text style={styles.Text}>Starting Amount:</Text>
+        <TextInput
+          keyboardType="number-pad"
+          returnKeyLabel="Done"
+          value={values.StartingAmount}
+          style={styles.input}
+          onChangeText={handleChange("StartingAmount")}
+          onBlur={handleBlur("StartingAmount")}
+        ></TextInput>
+        {errors.StartingAmount && touched.StartingAmount && (
+          <Text style={styles.errorMessage}>{errors.StartingAmount}</Text>
+        )}
+        <Text style={styles.Text}>Total Cost:</Text>
+        <TextInput
+          keyboardType="number-pad"
+          returnKeyLabel="Done"
+          value={values.TotalCost}
+          style={styles.input}
+          onChangeText={handleChange("TotalCost")}
+          onBlur={handleBlur("TotalCost")}
+        ></TextInput>
+        {errors.TotalCost && touched.TotalCost && (
+          <Text style={styles.errorMessage}>{errors.TotalCost}</Text>
+        )}
+        <Pressable style={styles.Button} onPress={() => handleSubmit()}>
+          <Text style={styles.ButtonText}>Submit</Text>
+        </Pressable>
+        <Pressable style={styles.Button} onPress={() => setPageView("")}>
+          <Text style={styles.ButtonText}>Cancel</Text>
+        </Pressable>
+      </View>
+    </ScrollView>
   );
 }
 
