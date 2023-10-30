@@ -3,10 +3,8 @@ import Home from "./home";
 import NewGoal from "./new_goal";
 import UpdateGoal from "./update_goal";
 import Graph from "./graph";
-import { View, Text, Pressable, StyleSheet } from "react-native";
-import { SelectList } from "react-native-dropdown-select-list";
+import { View, StyleSheet } from "react-native";
 import { useState } from "react";
-//import DropdownMenu from "react-native-dropdown-menu";
 
 export default function BigGoal({ navigation }) {
   const [pageView, setPageView] = useState("");
@@ -15,7 +13,7 @@ export default function BigGoal({ navigation }) {
     if (pageView == "NewGoal") return <NewGoal setPageView={setPageView} />;
     else if (pageView == "UpdateGoal")
       return <UpdateGoal setPageView={setPageView} />;
-    else if (pageView == "Graph") return <Graph />;
+    else if (pageView == "Graph") return <Graph setPageView={setPageView} />;
     else return <Home setPageView={setPageView} />;
   };
   return <View style={styles.centered}>{page()}</View>;
