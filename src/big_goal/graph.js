@@ -89,7 +89,7 @@ export default function Graph({ setPageView }) {
   return (
     <ScrollView>
       <View>
-        <View style={{ paddingHorizontal: 20, paddingVertical: 50, flex: 1 }}>
+        <View style={{ paddingHorizontal: 20, paddingVertical: 5, flex: 1 }}>
           <SelectList data={data} setSelected={setSelected} />
         </View>
         {selected && (
@@ -97,10 +97,10 @@ export default function Graph({ setPageView }) {
             <View
               style={{
                 alignItems: "center",
-                padding: 10,
+                padding: 5,
               }}
             >
-              <Text>
+              <Text style={styles.label}>
                 You will need to save ${SavingsPerMonth.toFixed(2)} for{" "}
                 {MonthsUntilPurchase} months.
               </Text>
@@ -108,15 +108,17 @@ export default function Graph({ setPageView }) {
             <View
               style={{
                 alignItems: "center",
-                padding: 10,
+                padding: 0,
               }}
             >
-              <Text>
+              <Text style={styles.label}>
                 Start Date: {StartDate.getMonth()}/{StartDate.getDay()}/
                 {StartDate.getFullYear()}
               </Text>
-              <Text>Starting Amount: ${StartingAmount}</Text>
-              <Text>Total Cost: ${TotalCost}</Text>
+              <Text style={styles.label}>
+                Starting Amount: ${StartingAmount}
+              </Text>
+              <Text style={styles.label}>Total Cost: ${TotalCost}</Text>
             </View>
             <LineChart
               data={{

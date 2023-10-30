@@ -63,18 +63,7 @@ const SmallGoal = ({ navigation }) => {
       answer: "",
     },
     validationSchema: smallGoalValidation,
-    onSubmit: (values) => {
-      addDoc(smallGoalReference, {
-        price: values.price,
-        wage: values.wage,
-        name: values.name,
-        answer: Answer.toString(),
-      })
-        .then(() => {
-          Reset();
-        })
-        .catch((err) => console.log(err));
-    },
+    onSubmit: () => {},
   });
 
   return (
@@ -147,21 +136,13 @@ const SmallGoal = ({ navigation }) => {
               <Text style={styles.buttonText}>Reset</Text>
             </Pressable>
           </View>
-          <View>
-            <Pressable
-              style={styles.button}
-              onPress={() => {
-                handleSubmit();
-              }}
-            >
-              <Text style={styles.buttonText}>Save</Text>
-            </Pressable>
-          </View>
         </>
       )}
       {ShowAnswer && (
         <View>
-          <Text>You will need to work {Answer} hours.</Text>
+          <Text style={styles.label}>
+            You will need to work {Answer.toFixed(2)} hours.
+          </Text>
         </View>
       )}
     </View>
