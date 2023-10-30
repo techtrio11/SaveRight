@@ -89,7 +89,7 @@ const SmallGoal = ({ navigation }) => {
             onChangeText={handleChange("name")}
             onBlur={handleBlur("name")}
           />
-          {errors.Name && touched.Name && (
+          {errors.name && touched.name && (
             <Text style={styles.errorMessage}>{errors.name}</Text>
           )}
         </View>
@@ -106,7 +106,7 @@ const SmallGoal = ({ navigation }) => {
           style={styles.input}
           onChangeText={handleChange("price")}
           onBlur={handleBlur("price")}
-        />{" "}
+        />
         {errors.price && touched.price && (
           <Text style={styles.errorMessage}>{errors.price}</Text>
         )}
@@ -118,7 +118,7 @@ const SmallGoal = ({ navigation }) => {
           style={styles.input}
           onChangeText={handleChange("wage")}
           onBlur={handleBlur("wage")}
-        />{" "}
+        />
         {errors.wage && touched.wage && (
           <Text style={styles.errorMessage}>{errors.wage}</Text>
         )}
